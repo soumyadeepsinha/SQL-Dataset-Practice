@@ -1,10 +1,50 @@
-This is a SQL practice session!
+# 🧑‍💻 This is a SQL practice session!
 
-Here is the context of the code in your workspace:
+# 📊 SQL Dataset Practice – Employee Data Analysis
 
-The workspace is for a SQL practice session.
-The dataset selected for practice is from Kaggle: https://www.kaggle.com/datasets/ravindrasinghrana/employeedataset/data
-The main files present are:
-README.md: Contains a brief description of the session and the dataset link.
-SQLQuery-Day-1.sql: Presumably contains SQL queries related to the dataset.
-This setup indicates you are working on SQL exercises using an employee dataset from Kaggle, with documentation in the README.md and queries in SQLQuery-Day-1.sql. If you need more specific context or details about the SQL queries, let me know!
+A hands‑on SQL project using a **comprehensive synthetic Employee/HR dataset** to explore data analysis, query optimization, and insight generation.  
+This repository demonstrates **practical SQL skills** on real‑world‑like data — from cleaning and transforming to extracting business‑ready insights.
+
+---
+
+## 📂 Dataset Overview
+
+The dataset (source: [Employee Dataset on Kaggle](https://www.kaggle.com/datasets/ravindrasinghrana/employeedataset/data)) contains multiple HR‑related tables, including:
+
+- **Employee Data** – Demographics, employment status, departments, titles, etc.
+- **Training & Development Data** – Program names, costs, durations, and outcomes.
+- **Recruitment Data** – Candidate details, job titles, hiring stages.
+- **Employee Engagement Survey Data** – Engagement, satisfaction, and work‑life balance scores.
+
+> _All data is synthetic and for learning purposes only._
+
+---
+
+## 🎯 Project Objectives
+
+- **Data Cleaning & Preparation** – Normalize schemas, correct data types, handle nulls.
+- **Exploratory Data Analysis (EDA)** – Understand workforce structure and patterns.
+- **Advanced SQL Queries** – Filtering, grouping, aggregations, window functions.
+- **Performance Optimization** – Use `TOP` / `OFFSET-FETCH`, indexes, and query tuning.
+- **Business Insights** – Identify cost‑effective trainings, high‑engagement teams, attrition trends.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Microsoft SQL Server** – Primary RDBMS used for queries and analysis.
+- **T‑SQL** – For DDL, DML, and analytical queries.
+- **Git & GitHub** – Version control and portfolio hosting.
+
+---
+
+## 📜 Example Queries
+
+```sql
+-- Top 1 highest cost internal training with passed outcome
+SELECT TOP 1 *
+FROM dbo.Training_and_Development_Data
+WHERE TrainingOutcome = 'Passed'
+  AND TrainingType = 'Internal'
+ORDER BY TrainingCost DESC;
+```
