@@ -41,8 +41,8 @@ The dataset (source: [Employee Dataset on Kaggle](https://www.kaggle.com/dataset
 ## 📜 Example Queries
 
 ```sql
--- Top 1 highest cost internal training with passed outcome
-SELECT TOP 1 *
+-- Organisation's spending for top 3 employees how passed the internal training
+SELECT TOP 3 *
 FROM dbo.Training_and_Development_Data
 WHERE TrainingOutcome = 'Passed'
   AND TrainingType = 'Internal'
