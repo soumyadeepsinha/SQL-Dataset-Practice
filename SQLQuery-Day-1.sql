@@ -81,3 +81,6 @@ WITH (
 
 -- Show the table after the
 SELECT * FROM dbo.Training_and_Development_Data;
+
+-- Show top 10 emoployee's details who passed during training and cost for them in Descending order
+SELECT TOP 10 * FROM dbo.Training_and_Development_Data WHERE TrainingOutcome = 'Passed' AND TrainingType = 'Internal' ORDER BY TrainingCost DESC;
