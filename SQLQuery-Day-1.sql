@@ -14,7 +14,7 @@ CREATE TABLE Employee_Data (
 	EmployeeStatus VARCHAR (100) NOT NULL,
 	DepartmentType VARCHAR(254) NOT NULL,
 	Division VARCHAR (100) NOT NULL,
-	DOB DATE,
+	DOB VARCHAR(250),
 	State VARCHAR (100) NOT NULL,
 	GenderCode VARCHAR (100) NOT NULL,
 	LocationCode VARCHAR (100) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE Employee_Data (
 );
 END
 
--- Show blank table
+-- Show Employee records table
 SELECT * FROM Employee_Data;
 
 -- Instert data into table
@@ -36,12 +36,23 @@ WITH (
    TABLOCK
 );
 
--- Change DOB column from datatype from Date to varchar
-ALTER TABLE Employee_Data
-ALTER COLUMN DOB VARCHAR(250);
+-- Update DOB with DATE format
+UPDATE Employee_Data
+SET DOB = CONVERT(date, DOB, 105);
 
--- Show table after inserting dataset
-SELECT * FROM dbo.Employee_Data
+-- Calculate employee's age
+ALTER TABLE Employee_Data
+ADD Age AS (
+    DATEDIFF(YEAR, DOB, GETDATE()) 
+    - CASE 
+        WHEN (MONTH(DOB) > MONTH(GETDATE())) 
+          OR (MONTH(DOB) = MONTH(GETDATE()) AND DAY(DOB) > DAY(GETDATE())) 
+        THEN 1 ELSE 0 
+      END
+);
+
+-- Show table senior employee at organisation
+SELECT EmpID, FirstName, LastName, Title, DOB, Age, GenderCode FROM dbo.Employee_Data WHERE Age >= 60;
 
 -- Show table with dataset with specific query
 SELECT * FROM dbo.Employee_Data WHERE CurrentEmployeeRating >= 4;
@@ -104,17 +115,17 @@ WHERE TrainingOutcome = 'Passed' AND TrainingType = 'Internal' ORDER BY Training
 SELECT EmployeeID, TrainingDate, TrainingType, TrainingProgramName, TrainingOutcome
 FROM dbo.Training_and_Development_Data WHERE TrainingOutcome IN ('Passed', 'Completed');
 
--- Fetch employees name who passed the training by joining two different tables
+-- Fetch employees name who passed or completed the training and age below 60 by joining two different tables
 SELECT 
 	e.EmpID, 
 	e.FirstName,
 	e.LastName,
 	e.Title,
+	e.Age,
 	t.TrainingDuration,
 	t.TrainingOutcome
 FROM Employee_Data e
 JOIN 
 	Training_and_Development_Data t ON e.EmpID = t.EmployeeID
 WHERE
-	t.TrainingOutcome IN ('Passed', 'Completed');
-
+	t.TrainingOutcome IN ('Passed', 'Completed') AND e.Age <=59;
