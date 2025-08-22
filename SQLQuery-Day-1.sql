@@ -46,14 +46,20 @@ SELECT * FROM dbo.Employee_Data
 -- Show table with dataset with specific query
 SELECT * FROM dbo.Employee_Data WHERE CurrentEmployeeRating >= 4;
 
+-- Show table with employees - where their performance needs improvement
+SELECT * FROM dbo.Employee_Data WHERE PerformanceScore = 'Needs Improvement';
+
+-- Show male employees record
 SELECT EmpID, FirstName, LastName, ADEmail from dbo.Employee_Data WHERE EmployeeStatus = 'Active' AND GenderCode = 'Male';
 
--- Show employees who are working till date
+-- Show employees who are working till date in Software engineering dept
 SELECT 
 	EmpID, FirstName, LastName, Title, ADEmail, Division from dbo.Employee_Data
 	WHERE ExitDate IS NULL AND DepartmentType = 'Software Engineering';
 
 -- Create a table for training and development data
+IF OBJECT_ID('dbo.Employee_Data', 'U') IS NULL
+BEGIN
 CREATE TABLE Training_and_Development_Data (
 	EmployeeID INT PRIMARY KEY,
 	TrainingDate VARCHAR (250) NOT NULL,
@@ -65,6 +71,7 @@ CREATE TABLE Training_and_Development_Data (
 	TrainingDuration INT NOT NULL,
 	TrainingCost VARCHAR(250) NOT NULL
 )
+END
 
 -- Show newly created table
 SELECT * FROM Training_and_Development_Data;
@@ -88,5 +95,26 @@ ALTER COLUMN TrainingCost FLOAT;
 --Get totoal training cost spent by the organisation
 SELECT SUM(TrainingCost) FROM dbo.Training_and_Development_Data;
 
+
 -- Show top 10 emoployee's details who passed during training and cost for them in Descending order
-SELECT TOP 10 * FROM dbo.Training_and_Development_Data WHERE TrainingOutcome = 'Passed' AND TrainingType = 'Internal' ORDER BY TrainingCost DESC;
+SELECT TOP 10 * FROM dbo.Training_and_Development_Data
+WHERE TrainingOutcome = 'Passed' AND TrainingType = 'Internal' ORDER BY TrainingCost DESC;
+
+-- Get Employees record who passed or completed training
+SELECT EmployeeID, TrainingDate, TrainingType, TrainingProgramName, TrainingOutcome
+FROM dbo.Training_and_Development_Data WHERE TrainingOutcome IN ('Passed', 'Completed');
+
+-- Fetch employees name who passed the training by joining two different tables
+SELECT 
+	e.EmpID, 
+	e.FirstName,
+	e.LastName,
+	e.Title,
+	t.TrainingDuration,
+	t.TrainingOutcome
+FROM Employee_Data e
+JOIN 
+	Training_and_Development_Data t ON e.EmpID = t.EmployeeID
+WHERE
+	t.TrainingOutcome IN ('Passed', 'Completed');
+
