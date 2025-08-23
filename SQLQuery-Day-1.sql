@@ -129,3 +129,22 @@ JOIN
 	Training_and_Development_Data t ON e.EmpID = t.EmployeeID
 WHERE
 	t.TrainingOutcome IN ('Passed', 'Completed') AND e.Age <=59;
+
+
+-- Create a new view
+CREATE VIEW Employee_Training_Performance_Views
+AS
+SELECT 
+	e.EmpID, 
+	e.FirstName, 
+	e.LastName,
+	t.TrainingOutcome,
+	t.TrainingCost
+
+FROM dbo.Employee_Data e
+JOIN 
+	Training_and_Development_Data t ON e.EmpID = t.EmployeeID
+WHERE e.Age >= 59;
+
+
+SELECT * FROM dbo.Employee_Training_Performance_Views;
