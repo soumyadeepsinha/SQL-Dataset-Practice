@@ -97,9 +97,6 @@ WITH (
    TABLOCK
 );
 
--- Show the table after the
-SELECT * FROM dbo.Training_and_Development_Data;
-
 ALTER TABLE dbo.Training_and_Development_Data
 ALTER COLUMN TrainingCost FLOAT;
 
@@ -132,12 +129,14 @@ WHERE
 
 
 -- Create a new view
-CREATE VIEW Employee_Training_Performance_Views
+CREATE OR ALTER VIEW Employee_Training_Performance_Views
 AS
 SELECT 
 	e.EmpID, 
 	e.FirstName, 
 	e.LastName,
+	e.Age,
+	e.Title,
 	t.TrainingOutcome,
 	t.TrainingCost
 
@@ -148,3 +147,15 @@ WHERE e.Age >= 59;
 
 
 SELECT * FROM dbo.Employee_Training_Performance_Views;
+
+-- Show Software Engineer who passed the training (creating values with constants)
+SELECT EmpID, FirstName, LastName, 'Software Engineer' AS Designation, TrainingCost 
+FROM dbo.Employee_Training_Performance_Views
+WHERE TrainingOutcome IN ('Completed', 'Passed')
+ORDER BY TrainingCost ASC;
+
+-- Show total training cost for each Job role (title) in Descending or Ascending order
+SELECT Title AS Designation, SUM(TrainingCost) AS TrainingCost
+FROM dbo.Employee_Training_Performance_Views
+GROUP BY Title
+ORDER BY TrainingCost ASC;
