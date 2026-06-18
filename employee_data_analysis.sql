@@ -91,6 +91,7 @@ SELECT EmpID,
 from EmployeeData
 WHERE ExitDate IS NULL
     AND DepartmentType = 'Software Engineering';
+
 -- Create a table for training and development data
 CREATE TABLE IF NOT EXISTS Training_and_Development_Data (
     EmployeeID INT PRIMARY KEY,
@@ -104,19 +105,23 @@ CREATE TABLE IF NOT EXISTS Training_and_Development_Data (
     TrainingDuration INT NOT NULL,
     TrainingCost DECIMAL(10, 2) NOT NULL -- Better for currency/money
 );
+
 -- Show newly created table
 SELECT *
 FROM Training_and_Development_Data;
 -- Insert data into table 
 LOAD DATA LOCAL INFILE '/Users/soumyadeepsinha/Documents/software/dataset/training_and_development_data.csv' INTO TABLE Training_and_Development_Data FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' -- Or '\r\n' if the CSV was created on a Windows machine
 IGNORE 1 ROWS;
+
 -- This ignores the header row in your CSV
 -- Alter column
 ALTER TABLE Training_and_Development_Data
 MODIFY COLUMN TrainingCost DECIMAL(10, 2);
+
 -- Get totoal training cost spent by the organisation
 SELECT SUM(TrainingCost)
 FROM Training_and_Development_Data;
+
 -- Show top 10 emoployee's details who passed during training and cost for them in Descending order
 SELECT *
 FROM Training_and_Development_Data
@@ -124,6 +129,7 @@ WHERE TrainingOutcome = 'Passed'
     AND TrainingType = 'Internal'
 ORDER BY TrainingCost DESC
 LIMIT 10;
+
 -- Get Employees record who passed or completed training
 SELECT EmployeeID,
     TrainingDate,
@@ -132,6 +138,7 @@ SELECT EmployeeID,
     TrainingOutcome
 FROM Training_and_Development_Data
 WHERE TrainingOutcome IN ('Passed', 'Completed');
+
 -- JOIN Function
 -- Fetch employees name who passed or completed the training and age below 60 by joining two different tables
 SELECT e.EmpID,
@@ -145,6 +152,7 @@ FROM EmployeeData e
     JOIN Training_and_Development_Data t ON e.EmpID = t.EmployeeID
 WHERE t.TrainingOutcome IN ('Passed', 'Completed')
     AND e.Age <= 59;
+    
 -- Create a new view
 CREATE OR REPLACE VIEW Employee_Training_Performance_Views AS
 SELECT e.EmpID,
@@ -160,6 +168,7 @@ WHERE e.Age >= 59;
 -- Fetch the created view
 SELECT *
 FROM Employee_Training_Performance_Views;
+
 -- Show Software Engineer who passed the training with minimum spend (creating values with constants)
 SELECT EmpID,
     FirstName,
@@ -172,10 +181,20 @@ WHERE (
         OR TrainingOutcome LIKE '%Passed%'
     )
 ORDER BY CAST(TrainingCost AS DECIMAL(10, 2)) DESC;
+
 -- Show total training cost for each Job role (title) in Descending or Ascending order
 SELECT Title AS Designation,
     SUM(TrainingCost) AS TrainingCost
 FROM Employee_Training_Performance_Views
 GROUP BY Title
 ORDER BY TrainingCost ASC;
--- Get  total training cost for each employee and show top 10 employees with highest training cost
+
+-- Get  Average training cost for department
+USE practice;
+SELECT DepartmentType AS Department,
+       AVG(TrainingCost) AS AverageTrainingCost
+FROM EmployeeData e
+JOIN Training_and_Development_Data t ON e.EmpID = t.EmployeeID
+GROUP BY DepartmentType
+ORDER BY AverageTrainingCost DESC;
+
