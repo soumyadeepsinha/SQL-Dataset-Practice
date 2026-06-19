@@ -34,19 +34,23 @@ CREATE TABLE EmployeeData (
 LOAD DATA LOCAL INFILE '/Users/soumyadeepsinha/Documents/software/dataset/employee_data.csv' INTO TABLE EmployeeData FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' -- Or '\r\n' if the CSV was created on a Windows machine
 IGNORE 1 ROWS;
 -- This ignores the header row in your CSV
+
+
 -- show table
-SELECT *
-FROM EmployeeData;
+SELECT * FROM EmployeeData;
+
 -- 1. Disable safe updates
 SET SQL_SAFE_UPDATES = 0;
 -- 2. Convert empty spaces to NULL to prevent truncation errors
 UPDATE EmployeeData
 SET DOB = NULL
 WHERE TRIM(DOB) = '';
+
 -- 3. Convert the string dates to MySQL format (YYYY-MM-DD)
 UPDATE EmployeeData
 SET DOB = STR_TO_DATE(DOB, '%d-%m-%Y')
 WHERE DOB IS NOT NULL;
+
 -- 4. Change DOB to DATE type and add Age column
 ALTER TABLE EmployeeData
 MODIFY COLUMN DOB DATE,
@@ -81,16 +85,16 @@ SELECT EmpID,
 from EmployeeData
 WHERE EmployeeStatus = 'Active'
     AND GenderCode = 'Male';
--- Show employees who are working till date in Software engineering dept
+    
+-- Show employees from Software engineering dept with Concatenation function
 SELECT EmpID,
-    FirstName,
-    LastName,
+	CONCAT_WS(' ', FirstName, LastName) AS FullName,
     Title,
     ADEmail,
-    Division
+    Division,
+    ExitDate
 from EmployeeData
-WHERE ExitDate IS NULL
-    AND DepartmentType = 'Software Engineering';
+WHERE DepartmentType = 'Software Engineering';
 
 -- Create a table for training and development data
 CREATE TABLE IF NOT EXISTS Training_and_Development_Data (
@@ -110,7 +114,12 @@ CREATE TABLE IF NOT EXISTS Training_and_Development_Data (
 SELECT *
 FROM Training_and_Development_Data;
 -- Insert data into table 
-LOAD DATA LOCAL INFILE '/Users/soumyadeepsinha/Documents/software/dataset/training_and_development_data.csv' INTO TABLE Training_and_Development_Data FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' -- Or '\r\n' if the CSV was created on a Windows machine
+LOAD DATA LOCAL INFILE '/Users/soumyadeepsinha/Documents/software/dataset/training_and_development_data.csv' 
+INTO TABLE Training_and_Development_Data 
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"' 
+LINES TERMINATED BY '\n' 
+-- Or '\r\n' if the CSV was created on a Windows machine
 IGNORE 1 ROWS;
 
 -- This ignores the header row in your CSV
@@ -153,21 +162,20 @@ FROM EmployeeData e
 WHERE t.TrainingOutcome IN ('Passed', 'Completed')
     AND e.Age <= 59;
     
--- Create a new view
+-- Create a new view with String & Concatenation function
 CREATE OR REPLACE VIEW Employee_Training_Performance_Views AS
 SELECT e.EmpID,
-    e.FirstName,
-    e.LastName,
+	CONCAT(LEFT(e.FirstName, 1), '. ', e.LastName) AS FullName,
     e.Age,
     e.Title,
-    t.TrainingOutcome,
+    UPPER(t.TrainingOutcome) AS TrainingResult,
     t.TrainingCost
 FROM EmployeeData e
     JOIN Training_and_Development_Data t ON e.EmpID = t.EmployeeID
 WHERE e.Age >= 59;
+
 -- Fetch the created view
-SELECT *
-FROM Employee_Training_Performance_Views;
+SELECT * FROM Employee_Training_Performance_Views;
 
 -- Show Software Engineer who passed the training with minimum spend (creating values with constants)
 SELECT EmpID,
@@ -190,7 +198,6 @@ GROUP BY Title
 ORDER BY TrainingCost ASC;
 
 -- Get  Average training cost for department
-USE practice;
 SELECT DepartmentType AS Department,
        AVG(TrainingCost) AS AverageTrainingCost
 FROM EmployeeData e
