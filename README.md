@@ -20,6 +20,11 @@ The dataset (source: [Employee Dataset on Kaggle](https://www.kaggle.com/dataset
 
 ---
 
+## 📊 Dataset use
+
+- **employee_data** - Employee data with information- Contins Employee ID, Name, Dept, Joining Data, ExitDate, ADEmail, etc
+- **training_and_development_data** - Contains traingin information including Employee ID, which can be used as Joining two datasets and retrieve results based on conditions.
+
 ## 🎯 Project Objectives
 
 - **Data Cleaning & Preparation** – Normalize schemas, correct data types, handle nulls.
@@ -49,7 +54,7 @@ The dataset (source: [Employee Dataset on Kaggle](https://www.kaggle.com/dataset
 - **AVG(Cost)** - Mathematic expression to get average values of Cost (Subjective)
 - **ALTER TABLE** - Make changes in existing Table
 - **MODIFY COLUMN** - Make changes in existing Column
-- **UPPER(TrainingOutcome) AS TrainingResult** - CAPTALISE a value and take it AS - ALIAS
+- **UPPER(TrainingOutcome) AS TrainingResult** - CAPTALISE a value and store it in a AS - ALIAS
 - **GROUP BY** - Retrieves identical data into distinct groups
 - **ORDER BY ASC** - Use in sorting the result-set of a query in either ascending order
 
