@@ -50,6 +50,8 @@ The dataset (source: [Employee Dataset on Kaggle](https://www.kaggle.com/dataset
 - **ALTER TABLE** - Make changes in existing Table
 - **MODIFY COLUMN** - Make changes in existing Column
 - **UPPER(TrainingOutcome) AS TrainingResult** - CAPTALISE a value and take it AS - ALIAS
+- **GROUP BY** - Retrieves identical data into distinct groups
+- **ORDER BY ASC** - Use in sorting the result-set of a query in either ascending order
 
 ## 📝 Important Points
 
