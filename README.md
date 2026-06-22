@@ -48,7 +48,6 @@ The dataset (source: [Employee Dataset on Kaggle](https://www.kaggle.com/dataset
 
 ## 📝 Important Points
 
-- **SQL_SAFE_UPDATES = 0** - Convert empty spaces to NULL to prevent truncation errors
 - **TRIM** - Remove trailing spaces from any
 - **LIMIT** - Retrieve Limited Rows from data
 - **JOIN** - Join two tables to retrieve data
@@ -60,10 +59,28 @@ The dataset (source: [Employee Dataset on Kaggle](https://www.kaggle.com/dataset
 ## 📜 Example Queries
 
 ```sql
--- Organisation's spending for top 3 employees how passed the internal training
-SELECT TOP 3 *
-FROM dbo.Training_and_Development_Data
-WHERE TrainingOutcome = 'Passed'
-  AND TrainingType = 'Internal'
-ORDER BY TrainingCost DESC;
+-- Find senior employees who are currently Working, passed or completed the training
+-- Age above 59 years old or set to limit
+
+SET @AgeLimit = 59;
+SELECT e.EmpID,
+    CONCAT_WS(' ', e.FirstName, e.LastName) AS 'Full Name',
+    e.Title,
+    e.Age,
+    (
+        SELECT DATE_FORMAT(STR_TO_DATE(e.StartDate, '%d-%b-%y'), '%d-%m-%Y')
+    ) AS 'Joining Date',
+    (
+        SELECT DATE_FORMAT(STR_TO_DATE(e.ExitDate, '%d-%b-%y'), '%d-%m-%Y')
+    ) AS 'Leaving Date',
+    t.TrainingDuration,
+    t.TrainingOutcome
+FROM EmployeeData e
+    JOIN Training_and_Development_Data t ON e.EmpID = t.EmployeeID
+WHERE (
+        e.ExitDate IS NULL
+        OR TRIM(e.ExitDate) = ''
+    )
+    AND t.TrainingOutcome IN ('Passed', 'Completed')
+    AND e.Age < @AgeLimit;
 ```
