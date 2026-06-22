@@ -45,6 +45,11 @@ The dataset (source: [Employee Dataset on Kaggle](https://www.kaggle.com/dataset
 - **SET SQL_SAFE_UPDATES = 0;** - Disable safe updates a table
 - **SET SQL_SAFE_UPDATES = 1** - Allow safe update a table
 - **SET @AgeLimit = 59;** - Set a variable and it can be used later
+- **SUM(Cost)** - Mathematic expression to get sum values of Cost (Subjective)
+- **AVG(Cost)** - Mathematic expression to get average values of Cost (Subjective)
+- **ALTER TABLE** - Make changes in existing Table
+- **MODIFY COLUMN** - Make changes in existing Column
+- **UPPER(TrainingOutcome) AS TrainingResult** - CAPTALISE a value and take it AS - ALIAS
 
 ## 📝 Important Points
 
