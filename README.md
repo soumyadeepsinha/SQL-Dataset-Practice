@@ -38,6 +38,25 @@ The dataset (source: [Employee Dataset on Kaggle](https://www.kaggle.com/dataset
 
 ---
 
+## 🔍 Important Query in SQL
+
+- **CREATE TABLE** - Create a blank table
+- **LOAD DATA LOCAL INFILE** - Load Data in blank table also known as **INSERT INTO TABLE**
+- **SET SQL_SAFE_UPDATES = 0;** - Disable safe updates a table
+- **SET SQL_SAFE_UPDATES = 1** - Allow safe update a table
+- **SET @AgeLimit = 59;** - Set a variable and it can be used later
+
+## 📝 Important Points
+
+- **SQL_SAFE_UPDATES = 0** - Convert empty spaces to NULL to prevent truncation errors
+- **TRIM** - Remove trailing spaces from any
+- **LIMIT** - Retrieve Limited Rows from data
+- **JOIN** - Join two tables to retrieve data
+- **String Function** – Extract information from text data stored in a database
+- **Concatenation Function** – Concatenatw two or more strings, columns,
+- **STR_TO_DATE Function** - Converts Date in VARCHAR format to Date Format
+- **Subquery** - Serves as an inner query to passes its results to the main query
+
 ## 📜 Example Queries
 
 ```sql
