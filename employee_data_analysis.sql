@@ -155,7 +155,7 @@ WHERE e.ExitDate IS NOT NULL
     AND e.ExitDate != ' ' -- Added: Excludes strings with just a blank space
     AND t.TrainingOutcome IN ('Passed', 'Completed')
     AND e.Age > 59;
--- Find Employees who crossed 60 years age and currently working 
+-- Find Employees who crossed 60 years age and currently not working 
 SELECT e.EmpID,
     CONCAT_WS(' ', e.FirstName, e.LastName) AS 'Full Name',
     e.Title,

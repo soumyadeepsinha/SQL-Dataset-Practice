@@ -59,7 +59,7 @@ The dataset (source: [Employee Dataset on Kaggle](https://www.kaggle.com/dataset
 ## 📜 Example Queries
 
 ```sql
--- Find senior employees who are currently Working, passed or completed the training
+-- Find senior employees who are currently not Working, passed or completed the training
 -- Age above 59 years old or set to limit
 
 SET @AgeLimit = 59;
