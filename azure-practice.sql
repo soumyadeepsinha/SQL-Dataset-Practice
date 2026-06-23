@@ -62,14 +62,8 @@ FROM [SalesLT].[SalesOrderDetail] sod
 ORDER BY soh.[TotalDue] ASC;
 
 -- Show product details with specific conditions
-SELECT [ProductID],
-  [ProductCategoryID],
-  [Name],
-  [ProductNumber],
-  [Color],
-  [Size],
-  [StandardCost],
-  [ListPrice]
+SELECT
+  [ProductID], [ProductCategoryID], [Name], [ProductNumber], [Color], [Size], [StandardCost], [ListPrice]
 FROM [SalesLT].[Product]
 WHERE [StandardCost] < 1000
   AND [Size] IS NOT NULL
@@ -78,7 +72,7 @@ ORDER BY [ListPrice] ASC;
 -- Find customers with a specific address type
 SELECT c.[CustomerID],
   CONCAT_WS(' ', c.[FirstName], c.[MiddleName], c.[LastName]) AS [FullName],
-  c.[EmailAddress], ca.[AddressType]
+  c.[EmailAddress], c.[SalesPerson], ca.[AddressType]
 FROM [SalesLT].[Customer] c
   JOIN [SalesLT].[CustomerAddress] ca ON ca.[CustomerID] = c.[CustomerID]
 WHERE ca.[AddressType] = 'Main Office';
