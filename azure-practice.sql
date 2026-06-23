@@ -1,18 +1,26 @@
+-- AdventureWorksT sample database forMicrosoft Azure
+
 SELECT @@VERSION;
 SELECT *
 FROM sys.databases;
+
+SELECT *
+FROM [SalesLT].[Customer];
+
 -- Show customer data
 SELECT [CustomerID],
   CONCAT_WS(' ', [FirstName], [LastName]) AS [FullName],
   [EmailAddress],
   [Phone]
 FROM [SalesLT].[Customer];
+
 -- Verify a specific customer details by ID
 SELECT [CustomerID],
   [FirstName],
   [LastName]
 FROM [SalesLT].[Customer]
 WHERE [CustomerID] = 29741;
+
 -- Show product data
 SELECT [ProductID],
   [Name],
@@ -22,6 +30,7 @@ SELECT [ProductID],
   [SellEndDate],
   [DiscontinuedDate]
 FROM [SalesLT].[Product]
+
 -- Show sales order data
 SELECT [CustomerID],
   [SalesOrderID],
@@ -30,6 +39,7 @@ SELECT [CustomerID],
   [TotalDue]
 FROM [SalesLT].[SalesOrderHeader]
 ORDER BY [TotalDue] DESC;
+
 -- Show sales order detail data
 SELECT [SalesOrderID],
   [ProductID],
@@ -38,6 +48,7 @@ SELECT [SalesOrderID],
   [LineTotal]
 FROM [SalesLT].[SalesOrderDetail]
 ORDER BY [LineTotal] DESC;
+
 -- Join sales order header and detail data according to customer ID
 SELECT soh.[CustomerID],
   CONCAT_WS(' ', c.[FirstName], c.[LastName]) AS [FullName],
@@ -49,6 +60,7 @@ FROM [SalesLT].[SalesOrderDetail] sod
   INNER JOIN [SalesLT].[SalesOrderHeader] soh ON sod.[SalesOrderID] = soh.[SalesOrderID]
   LEFT JOIN [SalesLT].[Customer] c ON soh.[CustomerID] = c.[CustomerID]
 ORDER BY soh.[TotalDue] ASC;
+
 -- Show product details with specific conditions
 SELECT [ProductID],
   [ProductCategoryID],
@@ -62,3 +74,13 @@ FROM [SalesLT].[Product]
 WHERE [StandardCost] < 1000
   AND [Size] IS NOT NULL
 ORDER BY [ListPrice] ASC;
+
+-- Find customers with a specific address type
+SELECT c.[CustomerID],
+  CONCAT_WS(' ', c.[FirstName], c.[MiddleName], c.[LastName]) AS [FullName],
+  c.[EmailAddress], ca.[AddressType]
+FROM [SalesLT].[Customer] c
+  JOIN [SalesLT].[CustomerAddress] ca ON ca.[CustomerID] = c.[CustomerID]
+WHERE ca.[AddressType] = 'Main Office';
+
+
