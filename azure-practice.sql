@@ -77,4 +77,18 @@ FROM [SalesLT].[Customer] c
   JOIN [SalesLT].[CustomerAddress] ca ON ca.[CustomerID] = c.[CustomerID]
 WHERE ca.[AddressType] = 'Main Office';
 
+-- Find products that are currently available for sale
+SELECT [ProductID], [Name], [ListPrice], [SellStartDate], [SellEndDate]
+FROM [SalesLT].[Product]
+WHERE [SellStartDate] <= GETDATE()
+  AND ([SellEndDate] IS NULL OR [SellEndDate] >= GETDATE())
+ORDER BY [ListPrice] DESC;
 
+-- Show total sales by customer
+SELECT soh.[CustomerID],
+  CONCAT_WS(' ', c.[FirstName], c.[LastName]) AS [FullName],
+  SUM(soh.[TotalDue]) AS [TotalSales]
+FROM [SalesLT].[SalesOrderHeader] soh
+  JOIN [SalesLT].[Customer] c ON soh.[CustomerID] = c.[CustomerID]
+GROUP BY soh.[CustomerID], c.[FirstName], c.[LastName]
+ORDER BY [TotalSales] DESC; 
