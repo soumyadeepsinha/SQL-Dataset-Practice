@@ -91,4 +91,16 @@ SELECT soh.[CustomerID],
 FROM [SalesLT].[SalesOrderHeader] soh
   JOIN [SalesLT].[Customer] c ON soh.[CustomerID] = c.[CustomerID]
 GROUP BY soh.[CustomerID], c.[FirstName], c.[LastName]
-ORDER BY [TotalSales] DESC; 
+ORDER BY [TotalSales] DESC;
+
+-- Show the top 10 products by total sales
+SELECT TOP 10
+  sod.[ProductID],
+  p.[Name],
+  p.[Color],
+  p.[Size],
+  SUM(sod.[LineTotal]) AS [TotalSales]
+FROM [SalesLT].[SalesOrderDetail] sod
+  JOIN [SalesLT].[Product] p ON sod.[ProductID] = p.[ProductID]
+GROUP BY sod.[ProductID], p.[Name], p.[Color], p.[Size]
+ORDER BY [TotalSales] ASC;
