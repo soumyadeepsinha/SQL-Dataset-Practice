@@ -1,5 +1,5 @@
 -- AdventureWorksT sample database forMicrosoft Azure
-
+-- Check version and available database on Azure
 SELECT @@VERSION;
 SELECT *
 FROM sys.databases;
@@ -61,7 +61,7 @@ FROM [SalesLT].[SalesOrderDetail] sod
   LEFT JOIN [SalesLT].[Customer] c ON soh.[CustomerID] = c.[CustomerID]
 ORDER BY soh.[TotalDue] ASC;
 
--- Show product details with specific conditions
+-- Show product details with specific conditions like price
 SELECT
   [ProductID], [ProductCategoryID], [Name], [ProductNumber], [Color], [Size], [StandardCost], [ListPrice]
 FROM [SalesLT].[Product]
